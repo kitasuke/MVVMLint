@@ -1,3 +1,3 @@
 # MVVMLinter
 
-A description of this package.
+A linter tool for data flow in MVVM
