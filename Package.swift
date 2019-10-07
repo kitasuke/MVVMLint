@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "MVVMLinter",
+    name: "MVVMLint",
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/apple/swift-syntax.git", .exact("0.50100.0")),
@@ -13,16 +13,16 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "MVVMLinter",
-            dependencies: ["MVVMLinterCore"]),
+            name: "MVVMLint",
+            dependencies: ["MVVMLintCore"]),
         .testTarget(
-            name: "MVVMLinterTests",
-            dependencies: ["MVVMLinter"]),
+            name: "MVVMLintTests",
+            dependencies: ["MVVMLint"]),
         .target(
-            name: "MVVMLinterCore",
+            name: "MVVMLintCore",
             dependencies: ["SwiftSyntax"]),
         .testTarget(
-            name: "MVVMLinterCoreTests",
-            dependencies: ["MVVMLinterCore"]),
+            name: "MVVMLintCoreTests",
+            dependencies: ["MVVMLintCore"]),
     ]
 )

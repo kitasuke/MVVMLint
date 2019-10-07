@@ -1,12 +1,12 @@
 //
 //  FileIteratorTests.swift
-//  MVVMLinterCoreTests
+//  MVVMLintCoreTests
 //
 //  Created by Yusuke Kita on 2019/10/03.
 //
 
 import XCTest
-@testable import MVVMLinterCore
+@testable import MVVMLintCore
 
 final class FileIteratorTests: XCTestCase {
 
