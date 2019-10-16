@@ -15,12 +15,12 @@ let package = Package(
         .target(
             name: "MVVMLint",
             dependencies: ["MVVMLintCore"]),
-        .testTarget(
-            name: "MVVMLintTests",
-            dependencies: ["MVVMLint"]),
         .target(
             name: "MVVMLintCore",
             dependencies: ["SwiftSyntax"]),
+        .testTarget(
+            name: "MVVMLintTests",
+            dependencies: ["MVVMLint"]),
         .testTarget(
             name: "MVVMLintCoreTests",
             dependencies: ["MVVMLintCore"]),
