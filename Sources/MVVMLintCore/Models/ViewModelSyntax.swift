@@ -9,38 +9,40 @@ import Foundation
 import SwiftSyntax
 
 public struct ViewModelSyntax {
-    public var inputsFuncDecls: [FunctionDeclSyntax] = []
-    public var outputsDecls: [DeclSyntax] = []
     public var inputsEnumCaseElements: [EnumCaseElementSyntax] = []
     public var outputsEnumCaseElements: [EnumCaseElementSyntax] = []
-    
-    public lazy var inputsDeclIdentifiers: [String] = {
-        return inputsFuncDecls
-            .map { $0.identifier.text }
-    }()
-    public lazy var outputDeclIdentifiers: [String] = {
-        return outputsDecls
-            .compactMap { decl in
-                switch decl {
-                case let variable as VariableDeclSyntax:
-                    return variable.bindings
-                        .compactMap { $0.pattern as? IdentifierPatternSyntax }
-                        .first
-                        .map { $0.identifier.text }
-                case let functionDecl as FunctionDeclSyntax:
-                    return functionDecl.identifier.text
-                default:
-                    return nil
-                }
+    public var inputsFuncDecls: [FunctionDeclSyntax] = []
+    public var outputsDecls: [DeclSyntax] = []
+
+    public lazy var inputsIdentifiers: [String] = {
+        if inputsEnumCaseElements.isEmpty {
+            return inputsFuncDecls
+                .map { $0.identifier.text }
+        } else {
+            return inputsEnumCaseElements
+                .map { $0.identifier.text }
         }
     }()
-    public lazy var inputsCaseIdentifiers: [String] = {
-        return inputsEnumCaseElements
-            .map { $0.identifier.text }
-    }()
-    public lazy var outputsCaseIdentifiers: [String] = {
-        return outputsEnumCaseElements
-            .map { $0.identifier.text }
+    public lazy var outputsIdentifiers: [String] = {
+        if outputsEnumCaseElements.isEmpty {
+            return outputsDecls
+                .compactMap { decl in
+                    switch decl {
+                    case let variable as VariableDeclSyntax:
+                        return variable.bindings
+                            .compactMap { $0.pattern as? IdentifierPatternSyntax }
+                            .first
+                            .map { $0.identifier.text }
+                    case let functionDecl as FunctionDeclSyntax:
+                        return functionDecl.identifier.text
+                    default:
+                        return nil
+                    }
+            }
+        } else {
+            return outputsEnumCaseElements
+                .map { $0.identifier.text }
+        }
     }()
     
     public init() {}

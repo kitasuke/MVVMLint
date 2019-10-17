@@ -21,13 +21,12 @@ final class ViewModelInspectorTests: XCTestCase {
         }
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewModelInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewModelSyntax.inputsCaseIdentifiers
+            visitor.viewModelSyntax.inputsIdentifiers
         )
     }
     
@@ -41,13 +40,12 @@ final class ViewModelInspectorTests: XCTestCase {
         }
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewModelInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewModelSyntax.outputsCaseIdentifiers
+            visitor.viewModelSyntax.outputsIdentifiers
         )
     }
     
@@ -65,17 +63,16 @@ final class ViewModelInspectorTests: XCTestCase {
         }
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewModelInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewModelSyntax.inputsCaseIdentifiers
+            visitor.viewModelSyntax.inputsIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewModelSyntax.outputsCaseIdentifiers
+            visitor.viewModelSyntax.outputsIdentifiers
         )
     }
     
@@ -93,13 +90,12 @@ final class ViewModelInspectorTests: XCTestCase {
         class FooViewModel: FooViewModelInputs, FooViewModelOutputs, FooViewModelType {}
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewModelInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewModelSyntax.inputsDeclIdentifiers
+            visitor.viewModelSyntax.inputsIdentifiers
         )
     }
     
@@ -117,13 +113,12 @@ final class ViewModelInspectorTests: XCTestCase {
         class FooViewModel: FooViewModelInputs, FooViewModelOutputs, FooViewModelType {}
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewModelInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewModelSyntax.outputDeclIdentifiers
+            visitor.viewModelSyntax.outputsIdentifiers
         )
     }
     
@@ -143,22 +138,22 @@ final class ViewModelInspectorTests: XCTestCase {
         }
         class FooViewModel: FooViewModelInputs, FooViewModelOutputs, FooViewModelType {}
         """
-        
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let syntax = try! makeSyntax(for: path)
+
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewModelInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewModelSyntax.inputsDeclIdentifiers
+            visitor.viewModelSyntax.inputsIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewModelSyntax.outputDeclIdentifiers
+            visitor.viewModelSyntax.outputsIdentifiers
         )
     }
     
-    private func makeSyntax(for path: String) throws -> SourceFileSyntax {
+    private func makeSyntax(from input: String) throws -> SourceFileSyntax {
+        let path = createSourceFile(from: input, suffix: "ViewModel")
         let parser = FileParser(path: path)
         return try parser.parse()
     }

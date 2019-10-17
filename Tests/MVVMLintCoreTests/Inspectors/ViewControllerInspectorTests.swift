@@ -24,13 +24,12 @@ final class ViewControllerInspectorTests: XCTestCase {
         }
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewController")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsFunctionArgumentIdentidiers
+            visitor.viewControllerSyntax.inputsIdentidiers
         )
     }
     
@@ -49,13 +48,12 @@ final class ViewControllerInspectorTests: XCTestCase {
         }
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewController")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewControllerSyntax.outputsCaseLabelIdentifiers
+            visitor.viewControllerSyntax.outputsIdentifiers
         )
     }
     
@@ -81,17 +79,16 @@ final class ViewControllerInspectorTests: XCTestCase {
         }
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewController")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsFunctionArgumentIdentidiers
+            visitor.viewControllerSyntax.inputsIdentidiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewControllerSyntax.outputsCaseLabelIdentifiers
+            visitor.viewControllerSyntax.outputsIdentifiers
         )
     }
     
@@ -108,13 +105,12 @@ final class ViewControllerInspectorTests: XCTestCase {
         }
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewController")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsMemberAccessIdentifiers
+            visitor.viewControllerSyntax.inputsIdentidiers
         )
     }
     
@@ -129,13 +125,12 @@ final class ViewControllerInspectorTests: XCTestCase {
         }
         """
         
-        let path = createSourceFile(from: input, suffix: "ViewController")
-        let syntax = try! makeSyntax(for: path)
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewControllerSyntax.outputsMemberAccessIdentifiers
+            visitor.viewControllerSyntax.outputsIdentifiers
         )
     }
     
@@ -156,22 +151,22 @@ final class ViewControllerInspectorTests: XCTestCase {
             }
         }
         """
-        
-        let path = createSourceFile(from: input, suffix: "ViewController")
-        let syntax = try! makeSyntax(for: path)
+
+        let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerInspector()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsMemberAccessIdentifiers
+            visitor.viewControllerSyntax.inputsIdentidiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewControllerSyntax.outputsMemberAccessIdentifiers
+            visitor.viewControllerSyntax.outputsIdentifiers
         )
     }
     
-    private func makeSyntax(for path: String) throws -> SourceFileSyntax {
+    private func makeSyntax(from input: String) throws -> SourceFileSyntax {
+        let path = createSourceFile(from: input, suffix: "ViewController")
         let parser = FileParser(path: path)
         return try parser.parse()
     }
