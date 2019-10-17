@@ -14,7 +14,7 @@ public struct ViewControllerSyntax {
     public var inputsMemberAccesses: [MemberAccessExprSyntax] = []
     public var outputsMemberAccesses: [MemberAccessExprSyntax] = []
     
-    public lazy var inputsIdentidiers: [String] = {
+    public lazy var inputsIdentifiers: [String] = {
         if inputsFunctionCalls.isEmpty {
             return inputsMemberAccesses
                 .map { $0.name.text }

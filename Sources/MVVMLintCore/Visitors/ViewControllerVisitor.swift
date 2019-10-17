@@ -1,5 +1,5 @@
 //
-//  ViewControllerInspector.swift
+//  ViewControllerVisitor.swift
 //  MVVMLintCore
 //
 //  Created by Yusuke Kita on 2019/10/11.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public struct ViewControllerInspector: SyntaxVisitor {
+public struct ViewControllerVisitor: SyntaxVisitor {
 
     public internal(set) var viewControllerSyntax = ViewControllerSyntax()
 

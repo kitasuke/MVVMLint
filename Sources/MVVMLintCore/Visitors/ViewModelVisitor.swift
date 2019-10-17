@@ -1,5 +1,5 @@
 //
-//  ViewModelInspector.swift
+//  ViewModelVisitor.swift
 //  MVVMLintCore
 //
 //  Created by Yusuke Kita on 2019/10/10.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public struct ViewModelInspector: SyntaxVisitor {
+public struct ViewModelVisitor: SyntaxVisitor {
     
     public internal(set) var viewModelSyntax = ViewModelSyntax()
 

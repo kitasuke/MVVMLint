@@ -1,5 +1,5 @@
 //
-//  ViewModelInspectorTests.swift
+//  ViewModelVisitorTests.swift
 //  MVVMLintCore
 //
 //  Created by Yusuke Kita on 10/16/19.
@@ -10,7 +10,7 @@ import XCTest
 import SwiftSyntax
 @testable import MVVMLintCore
 
-final class ViewModelInspectorTests: XCTestCase {
+final class ViewModelVisitorTests: XCTestCase {
     func test_inputsEnumCases() {
         let input = """
         class FooViewModel: ViewModelType {
@@ -22,7 +22,7 @@ final class ViewModelInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewModelInspector()
+        var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
@@ -41,7 +41,7 @@ final class ViewModelInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewModelInspector()
+        var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
@@ -64,7 +64,7 @@ final class ViewModelInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewModelInspector()
+        var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
@@ -91,7 +91,7 @@ final class ViewModelInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewModelInspector()
+        var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
@@ -114,7 +114,7 @@ final class ViewModelInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewModelInspector()
+        var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
@@ -140,7 +140,7 @@ final class ViewModelInspectorTests: XCTestCase {
         """
 
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewModelInspector()
+        var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],

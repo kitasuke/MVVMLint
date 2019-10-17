@@ -1,5 +1,5 @@
 //
-//  ViewControllerInspectorTests.swift
+//  ViewControllerVisitorTests.swift
 //  MVVMLintCoreTests
 //
 //  Created by Yusuke Kita on 10/17/19.
@@ -10,7 +10,7 @@ import XCTest
 import SwiftSyntax
 @testable import MVVMLintCore
 
-final class ViewControllerInspectorTests: XCTestCase {
+final class ViewControllerVisitorTests: XCTestCase {
     func test_inputsFunctionCalls() {
         let input = """
         class FooViewController {
@@ -25,11 +25,11 @@ final class ViewControllerInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewControllerInspector()
+        var visitor = ViewControllerVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsIdentidiers
+            visitor.viewControllerSyntax.inputsIdentifiers
         )
     }
     
@@ -49,7 +49,7 @@ final class ViewControllerInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewControllerInspector()
+        var visitor = ViewControllerVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
@@ -80,11 +80,11 @@ final class ViewControllerInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewControllerInspector()
+        var visitor = ViewControllerVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsIdentidiers
+            visitor.viewControllerSyntax.inputsIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
@@ -106,11 +106,11 @@ final class ViewControllerInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewControllerInspector()
+        var visitor = ViewControllerVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsIdentidiers
+            visitor.viewControllerSyntax.inputsIdentifiers
         )
     }
     
@@ -126,7 +126,7 @@ final class ViewControllerInspectorTests: XCTestCase {
         """
         
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewControllerInspector()
+        var visitor = ViewControllerVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
@@ -153,11 +153,11 @@ final class ViewControllerInspectorTests: XCTestCase {
         """
 
         let syntax = try! makeSyntax(from: input)
-        var visitor = ViewControllerInspector()
+        var visitor = ViewControllerVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsIdentidiers
+            visitor.viewControllerSyntax.inputsIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
