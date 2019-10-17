@@ -23,6 +23,6 @@ let package = Package(
             dependencies: ["MVVMLint"]),
         .testTarget(
             name: "MVVMLintCoreTests",
-            dependencies: ["MVVMLintCore"]),
+            dependencies: ["MVVMLintCore", "SwiftSyntax"]),
     ]
 )

@@ -10,7 +10,7 @@ import SwiftSyntax
 
 public struct ViewControllerInspector: SyntaxVisitor {
 
-    public private(set) var viewControllerSyntax = ViewControllerSyntax()
+    public internal(set) var viewControllerSyntax = ViewControllerSyntax()
 
     public init() {}
     
@@ -19,8 +19,12 @@ public struct ViewControllerInspector: SyntaxVisitor {
         if node.hasApplyMemberAccess() {
             viewControllerSyntax.inputsFunctionCalls.append(node)
             return .skipChildren
-        } else if node.hasSubscribeMemberAccess() {
-            viewControllerSyntax.outputsFunctionCalls.append(node)
+        } else if node.hasSubscribeMemberAccess(),
+            let closureExpr = node.trailingClosure?.statements {
+            let switchCases = closureExpr
+                .compactMap { $0.item as? SwitchStmtSyntax }
+                .flatMap { $0.cases.compactMap { $0 as? SwitchCaseSyntax } }
+            viewControllerSyntax.outputsSwitchCases.append(contentsOf: switchCases)
             return .skipChildren
         }
         
