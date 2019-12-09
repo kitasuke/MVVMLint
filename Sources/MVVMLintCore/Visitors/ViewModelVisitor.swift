@@ -10,7 +10,7 @@ import SwiftSyntax
 
 public struct ViewModelVisitor: SyntaxVisitor {
     
-    public internal(set) var viewModelSyntax = ViewModelSyntax()
+    public var viewModelSyntax = ViewModelSyntax()
 
     public init() {}
 

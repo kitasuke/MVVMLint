@@ -31,17 +31,15 @@ public struct FileScanner {
             }
         }
 
-        var pairs: [FilePair] = []
-        for viewModel in viewModelFiles {
-            let endIndex = viewModel.pathWithoutExtension.endIndex
-            let index = viewModel.pathWithoutExtension.index(endIndex, offsetBy: -FileKind.viewModel.identifier.count)
-            let targetPath = viewModel.pathWithoutExtension.replacingCharacters(in: index..<endIndex, with: FileKind.viewController.identifier)
-            let filePath = URL(string: targetPath)!.appendingPathExtension(File.extension).absoluteString
-            let file = File(path: filePath)
-            guard let viewController = viewControllerFiles.first(where: { $0.path == file.path }) else {
-                continue
-            }
-            pairs.append(.init(files: [viewModel, viewController]))
+        let pairs: [FilePair] = viewModelFiles
+            .compactMap { viewModel in
+                let targetPath = viewModel.asViewControllerPath()
+                let filePath = URL(string: targetPath)!.appendingPathExtension(File.extension).absoluteString
+                let file = File(path: filePath)
+                guard let viewController = viewControllerFiles.first(where: { $0.path == file.path }) else {
+                    return nil
+                }
+                return .init(files: [viewModel, viewController])
         }
         return pairs
     }

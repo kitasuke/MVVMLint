@@ -10,7 +10,7 @@ import SwiftSyntax
 
 public struct ViewControllerVisitor: SyntaxVisitor {
 
-    public internal(set) var viewControllerSyntax = ViewControllerSyntax()
+    public var viewControllerSyntax = ViewControllerSyntax()
 
     public init() {}
     

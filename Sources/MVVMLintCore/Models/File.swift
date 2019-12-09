@@ -26,3 +26,16 @@ public struct File {
         self.kind = FileKind(name: self.name)
     }
 }
+
+extension File {
+    func asViewControllerPath() -> String {
+        guard self.kind == .viewModel else {
+            return self.path
+        }
+
+        let endIndex = self.pathWithoutExtension.endIndex
+        let index = self.pathWithoutExtension.index(endIndex, offsetBy: -FileKind.viewModel.identifier.count)
+        let targetPath = self.pathWithoutExtension.replacingCharacters(in: index..<endIndex, with: FileKind.viewController.identifier)
+        return targetPath
+    }
+}
