@@ -29,7 +29,7 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsIdentifiers
+            visitor.parsedViewController.inputsIdentifiers
         )
     }
     
@@ -53,7 +53,7 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewControllerSyntax.outputsIdentifiers
+            visitor.parsedViewController.outputsIdentifiers
         )
     }
     
@@ -84,11 +84,11 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsIdentifiers
+            visitor.parsedViewController.inputsIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewControllerSyntax.outputsIdentifiers
+            visitor.parsedViewController.outputsIdentifiers
         )
     }
     
@@ -110,7 +110,7 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsIdentifiers
+            visitor.parsedViewController.inputsIdentifiers
         )
     }
     
@@ -130,7 +130,7 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewControllerSyntax.outputsIdentifiers
+            visitor.parsedViewController.outputsIdentifiers
         )
     }
     
@@ -157,17 +157,17 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewControllerSyntax.inputsIdentifiers
+            visitor.parsedViewController.inputsIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewControllerSyntax.outputsIdentifiers
+            visitor.parsedViewController.outputsIdentifiers
         )
     }
     
     private func makeSyntax(from input: String) throws -> SourceFileSyntax {
         let path = createSourceFile(from: input, suffix: "ViewController")
-        let parser = FileParser(path: path)
-        return try parser.parse()
+        let parser = Parser(file: File(path: path))
+        return try parser.parseSyntax()
     }
 }

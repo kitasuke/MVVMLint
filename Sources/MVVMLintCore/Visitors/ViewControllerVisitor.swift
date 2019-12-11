@@ -10,21 +10,21 @@ import SwiftSyntax
 
 public struct ViewControllerVisitor: SyntaxVisitor {
 
-    public var viewControllerSyntax = ViewControllerSyntax()
+    public var parsedViewController = ParsedViewController()
 
     public init() {}
     
     // visit visits function call expr for `viewModel.apply(_:)` and `viewModel.outputsObservable.subscribe {}`
     public mutating func visit(_ node: FunctionCallExprSyntax) -> SyntaxVisitorContinueKind {
         if node.hasApplyMemberAccess() {
-            viewControllerSyntax.inputsFunctionCalls.append(node)
+            parsedViewController.inputsFunctionCalls.append(node)
             return .skipChildren
         } else if node.hasSubscribeMemberAccess(),
             let closureExpr = node.trailingClosure?.statements {
             let switchCases = closureExpr
                 .compactMap { $0.item as? SwitchStmtSyntax }
                 .flatMap { $0.cases.compactMap { $0 as? SwitchCaseSyntax } }
-            viewControllerSyntax.outputsSwitchCases.append(contentsOf: switchCases)
+            parsedViewController.outputsSwitchCases.append(contentsOf: switchCases)
             return .skipChildren
         }
         
@@ -41,9 +41,9 @@ public struct ViewControllerVisitor: SyntaxVisitor {
 
         let memberAccessName = memberAccessExpr.name.text
         if memberAccessName == "inputs" {
-            viewControllerSyntax.inputsMemberAccesses.append(node)
+            parsedViewController.inputsMemberAccesses.append(node)
         } else if memberAccessName == "outputs" {
-            viewControllerSyntax.outputsMemberAccesses.append(node)
+            parsedViewController.outputsMemberAccesses.append(node)
         }
         return .skipChildren
     }

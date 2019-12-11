@@ -1,5 +1,5 @@
 //
-//  ViewModelSyntax.swift
+//  ParsedViewModel.swift
 //  MVVMLintCore
 //
 //  Created by Yusuke Kita on 10/15/19.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public struct ViewModelSyntax {
+public struct ParsedViewModel {
     public var inputsEnumCaseElements: [EnumCaseElementSyntax] = []
     public var outputsEnumCaseElements: [EnumCaseElementSyntax] = []
     public var inputsFuncDecls: [FunctionDeclSyntax] = []

@@ -10,7 +10,7 @@ import SwiftSyntax
 
 public struct ViewModelVisitor: SyntaxVisitor {
     
-    public var viewModelSyntax = ViewModelSyntax()
+    public var parsedViewModel = ParsedViewModel()
 
     public init() {}
 
@@ -31,9 +31,9 @@ public struct ViewModelVisitor: SyntaxVisitor {
             .flatMap { $0.elements.map { $0 } }
         
         if enumIdentifier.hasSuffix("Inputs") {
-            viewModelSyntax.inputsEnumCaseElements = caseElements
+            parsedViewModel.inputsEnumCaseElements = caseElements
         } else if enumIdentifier.hasSuffix("Outputs") {
-            viewModelSyntax.outputsEnumCaseElements = caseElements
+            parsedViewModel.outputsEnumCaseElements = caseElements
         }
         return .skipChildren
     }
@@ -44,10 +44,10 @@ public struct ViewModelVisitor: SyntaxVisitor {
         if name.hasSuffix(ProtocolIdentifier.inputs.name) {
             let inputsFuncDeclSyntaxes = node.members.members
                 .compactMap { $0.decl as? FunctionDeclSyntax }
-            viewModelSyntax.inputsFuncDecls = inputsFuncDeclSyntaxes
+            parsedViewModel.inputsFuncDecls = inputsFuncDeclSyntaxes
         } else if name.hasSuffix(ProtocolIdentifier.outputs.name) {
             let outputsIdentifierSyntaxes = node.members.members.map { $0.decl }
-            viewModelSyntax.outputsDecls = outputsIdentifierSyntaxes
+            parsedViewModel.outputsDecls = outputsIdentifierSyntaxes
         }
     }
 }

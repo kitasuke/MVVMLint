@@ -26,7 +26,7 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewModelSyntax.inputsIdentifiers
+            visitor.parsedViewModel.inputsIdentifiers
         )
     }
     
@@ -45,7 +45,7 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewModelSyntax.outputsIdentifiers
+            visitor.parsedViewModel.outputsIdentifiers
         )
     }
     
@@ -68,11 +68,11 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewModelSyntax.inputsIdentifiers
+            visitor.parsedViewModel.inputsIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewModelSyntax.outputsIdentifiers
+            visitor.parsedViewModel.outputsIdentifiers
         )
     }
     
@@ -95,7 +95,7 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewModelSyntax.inputsIdentifiers
+            visitor.parsedViewModel.inputsIdentifiers
         )
     }
     
@@ -118,7 +118,7 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewModelSyntax.outputsIdentifiers
+            visitor.parsedViewModel.outputsIdentifiers
         )
     }
     
@@ -144,17 +144,17 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.viewModelSyntax.inputsIdentifiers
+            visitor.parsedViewModel.inputsIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.viewModelSyntax.outputsIdentifiers
+            visitor.parsedViewModel.outputsIdentifiers
         )
     }
     
     private func makeSyntax(from input: String) throws -> SourceFileSyntax {
         let path = createSourceFile(from: input, suffix: "ViewModel")
-        let parser = FileParser(path: path)
-        return try parser.parse()
+        let parser = Parser(file: File(path: path))
+        return try parser.parseSyntax()
     }
 }

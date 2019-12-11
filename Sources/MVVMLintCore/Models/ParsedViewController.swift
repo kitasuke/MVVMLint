@@ -1,5 +1,5 @@
 //
-//  ViewControllerSyntax.swift
+//  ParsedViewController.swift
 //  MVVMLintCore
 //
 //  Created by Yusuke Kita on 10/15/19.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public struct ViewControllerSyntax {
+public struct ParsedViewController {
     public var inputsFunctionCalls: [FunctionCallExprSyntax] = []
     public var outputsSwitchCases: [SwitchCaseSyntax] = []
     public var inputsMemberAccesses: [MemberAccessExprSyntax] = []
