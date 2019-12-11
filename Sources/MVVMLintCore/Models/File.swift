@@ -12,7 +12,6 @@ public struct File {
     public var path: String
     public var pathWithoutExtension: String
     public var name: String
-    public static let `extension` = "swift"
 
     init(path: String) {
         guard let url = URL(string: path) else {
@@ -25,6 +24,10 @@ public struct File {
         self.name = urlDeletingPathExtension.lastPathComponent
         self.kind = FileKind(name: self.name)
     }
+}
+
+extension File {
+    public static let `extension` = "swift"
 }
 
 extension File {

@@ -8,40 +8,40 @@
 import Foundation
 import SwiftSyntax
 
-public struct ParsedViewModel {
-    public var inputsEnumCaseElements: [EnumCaseElementSyntax] = []
-    public var outputsEnumCaseElements: [EnumCaseElementSyntax] = []
-    public var inputsFuncDecls: [FunctionDeclSyntax] = []
-    public var outputsDecls: [DeclSyntax] = []
+public struct ParsedViewModel: ParsedSyntax {
+    public var inputEnumCaseElements: [EnumCaseElementSyntax] = []
+    public var outputEnumCaseElements: [EnumCaseElementSyntax] = []
+    public var inputFuncDecls: [FunctionDeclSyntax] = []
+    public var outputDecls: [DeclSyntax] = []
 
-    public lazy var inputsIdentifiers: [String] = {
-        if inputsEnumCaseElements.isEmpty {
-            return inputsFuncDecls
-                .map { $0.identifier.text }
+    public lazy var inputIdentifiers: [TokenSyntax] = {
+        if inputEnumCaseElements.isEmpty {
+            return inputFuncDecls
+                .map { $0.identifier }
         } else {
-            return inputsEnumCaseElements
-                .map { $0.identifier.text }
+            return inputEnumCaseElements
+                .map { $0.identifier }
         }
     }()
-    public lazy var outputsIdentifiers: [String] = {
-        if outputsEnumCaseElements.isEmpty {
-            return outputsDecls
+    public lazy var outputIdentifiers: [TokenSyntax] = {
+        if outputEnumCaseElements.isEmpty {
+            return outputDecls
                 .compactMap { decl in
                     switch decl {
                     case let variable as VariableDeclSyntax:
                         return variable.bindings
                             .compactMap { $0.pattern as? IdentifierPatternSyntax }
                             .first
-                            .map { $0.identifier.text }
+                            .map { $0.identifier }
                     case let functionDecl as FunctionDeclSyntax:
-                        return functionDecl.identifier.text
+                        return functionDecl.identifier
                     default:
                         return nil
                     }
             }
         } else {
-            return outputsEnumCaseElements
-                .map { $0.identifier.text }
+            return outputEnumCaseElements
+                .map { $0.identifier }
         }
     }()
     

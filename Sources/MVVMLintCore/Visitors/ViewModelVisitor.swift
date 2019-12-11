@@ -8,9 +8,9 @@
 import Foundation
 import SwiftSyntax
 
-public struct ViewModelVisitor: SyntaxVisitor {
+public struct ViewModelVisitor: MVVMVisitor {
     
-    public var parsedViewModel = ParsedViewModel()
+    public var parsedSyntax = ParsedViewModel()
 
     public init() {}
 
@@ -31,9 +31,9 @@ public struct ViewModelVisitor: SyntaxVisitor {
             .flatMap { $0.elements.map { $0 } }
         
         if enumIdentifier.hasSuffix("Inputs") {
-            parsedViewModel.inputsEnumCaseElements = caseElements
+            parsedSyntax.inputEnumCaseElements = caseElements
         } else if enumIdentifier.hasSuffix("Outputs") {
-            parsedViewModel.outputsEnumCaseElements = caseElements
+            parsedSyntax.outputEnumCaseElements = caseElements
         }
         return .skipChildren
     }
@@ -44,10 +44,10 @@ public struct ViewModelVisitor: SyntaxVisitor {
         if name.hasSuffix(ProtocolIdentifier.inputs.name) {
             let inputsFuncDeclSyntaxes = node.members.members
                 .compactMap { $0.decl as? FunctionDeclSyntax }
-            parsedViewModel.inputsFuncDecls = inputsFuncDeclSyntaxes
+            parsedSyntax.inputFuncDecls = inputsFuncDeclSyntaxes
         } else if name.hasSuffix(ProtocolIdentifier.outputs.name) {
             let outputsIdentifierSyntaxes = node.members.members.map { $0.decl }
-            parsedViewModel.outputsDecls = outputsIdentifierSyntaxes
+            parsedSyntax.outputDecls = outputsIdentifierSyntaxes
         }
     }
 }

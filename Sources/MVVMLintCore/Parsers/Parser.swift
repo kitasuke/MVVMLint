@@ -18,26 +18,22 @@ public class Parser {
         self.pathURL = URL(fileURLWithPath: file.path)
     }
 
-    public func parseViewModel() throws -> ParsedViewModel {
-        guard case .viewModel = file.kind else {
-            fatalError()
-        }
+    public func parse() throws -> ParsedSyntax {
 
         let syntax = try parseSyntax()
-        var visitor = ViewModelVisitor()
-        syntax.walk(&visitor)
-        return visitor.parsedViewModel
-    }
 
-    public func parseViewController() throws -> ParsedViewController {
-        guard case .viewController = file.kind else {
+        switch file.kind {
+        case .viewModel:
+            var visitor = ViewModelVisitor()
+            syntax.walk(&visitor)
+            return visitor.parsedSyntax
+        case .viewController:
+            var visitor = ViewControllerVisitor()
+            syntax.walk(&visitor)
+            return visitor.parsedSyntax
+        default:
             fatalError()
         }
-
-        let syntax = try parseSyntax()
-        var visitor = ViewControllerVisitor()
-        syntax.walk(&visitor)
-        return visitor.parsedViewController
     }
 
     func parseSyntax() throws -> SourceFileSyntax {

@@ -29,7 +29,7 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedViewController.inputsIdentifiers
+            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
     }
     
@@ -53,7 +53,7 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedViewController.outputsIdentifiers
+            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
     
@@ -84,11 +84,11 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedViewController.inputsIdentifiers
+            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedViewController.outputsIdentifiers
+            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
     
@@ -110,7 +110,7 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedViewController.inputsIdentifiers
+            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
     }
     
@@ -130,7 +130,7 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedViewController.outputsIdentifiers
+            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
     
@@ -157,11 +157,11 @@ final class ViewControllerVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedViewController.inputsIdentifiers
+            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedViewController.outputsIdentifiers
+            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
     

@@ -26,7 +26,7 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedViewModel.inputsIdentifiers
+            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
     }
     
@@ -45,7 +45,7 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedViewModel.outputsIdentifiers
+            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
     
@@ -68,11 +68,11 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedViewModel.inputsIdentifiers
+            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedViewModel.outputsIdentifiers
+            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
     
@@ -95,7 +95,7 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedViewModel.inputsIdentifiers
+            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
     }
     
@@ -118,7 +118,7 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedViewModel.outputsIdentifiers
+            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
     
@@ -144,17 +144,11 @@ final class ViewModelVisitorTests: XCTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedViewModel.inputsIdentifiers
+            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedViewModel.outputsIdentifiers
+            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
-    }
-    
-    private func makeSyntax(from input: String) throws -> SourceFileSyntax {
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let parser = Parser(file: File(path: path))
-        return try parser.parseSyntax()
     }
 }
