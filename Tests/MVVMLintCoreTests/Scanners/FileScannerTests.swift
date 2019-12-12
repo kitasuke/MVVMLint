@@ -27,7 +27,7 @@ class FileScannerTests: XCTestCase {
 
         XCTAssert(pairs.count == 1)
         XCTAssertEqual(
-            pairs.map { $0.files.map { $0.path } },
+            pairs.map { [$0.viewModel.path, $0.viewController.path] },
             [["FooViewModel", "FooViewController"].map { [base, $0, `extension`].joined() }]
         )
     }

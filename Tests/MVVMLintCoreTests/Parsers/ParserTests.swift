@@ -24,9 +24,9 @@ final class ParserTests: XCTestCase {
         }
         """
 
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let parser = Parser(file: .init(path: path))
-        var parsedSyntax = try! parser.parse() as! ParsedViewModel
+        let parser = Parser()
+        let file = makeViewModel(from: input)
+        var parsedSyntax = try! parser.parse(fileType: file)
 
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
@@ -55,9 +55,9 @@ final class ParserTests: XCTestCase {
         class FooViewModel: FooViewModelInputs, FooViewModelOutputs, FooViewModelType {}
         """
 
-        let path = createSourceFile(from: input, suffix: "ViewModel")
-        let parser = Parser(file: .init(path: path))
-        var parsedSyntax = try! parser.parse() as! ParsedViewModel
+        let parser = Parser()
+        let file = makeViewModel(from: input)
+        var parsedSyntax = try! parser.parse(fileType: file)
 
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
@@ -91,9 +91,9 @@ final class ParserTests: XCTestCase {
         }
         """
 
-        let path = createSourceFile(from: input, suffix: "ViewController")
-        let parser = Parser(file: .init(path: path))
-        var parsedSyntax = try! parser.parse() as! ParsedViewController
+        let parser = Parser()
+        let file = makeViewController(from: input)
+        var parsedSyntax = try! parser.parse(fileType: file)
 
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
@@ -123,9 +123,9 @@ final class ParserTests: XCTestCase {
         }
         """
 
-        let path = createSourceFile(from: input, suffix: "ViewController")
-        let parser = Parser(file: .init(path: path))
-        var parsedSyntax = try! parser.parse() as! ParsedViewController
+        let parser = Parser()
+        let file = makeViewController(from: input)
+        var parsedSyntax = try! parser.parse(fileType: file)
 
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
@@ -135,5 +135,15 @@ final class ParserTests: XCTestCase {
             ["reloadData", "showError"],
             parsedSyntax.outputIdentifiers.map { $0.text }
         )
+    }
+
+    private func makeViewModel(from input: String) -> ViewModelFile {
+        let path = createSourceFile(from: input, suffix: "ViewModel")
+        return ViewModelFile(path: path)
+    }
+
+    private func makeViewController(from input: String) -> ViewControllerFile {
+        let path = createSourceFile(from: input, suffix: "ViewController")
+        return ViewControllerFile(path: path)
     }
 }

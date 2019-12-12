@@ -8,17 +8,10 @@
 import Foundation
 
 public struct FilePair {
-    public var files: [File]
-    public var viewModel: File
-    public var viewController: File
+    public var viewModel: ViewModelFile
+    public var viewController: ViewControllerFile
 
-    public init(files: [File]) {
-        self.files = files
-        guard let viewModel = files.first(where: { $0.kind == .viewModel }),
-            let viewController = files.first(where: { $0.kind == .viewController }) else {
-            fatalError()
-        }
-
+    public init(viewModel: ViewModelFile, viewController: ViewControllerFile) {
         self.viewModel = viewModel
         self.viewController = viewController
     }

@@ -10,33 +10,18 @@ import SwiftSyntax
 
 public class Parser {
 
-    public let file: File
-    public let pathURL: URL
+    public init() {}
 
-    public init(file: File) {
-        self.file = file
-        self.pathURL = URL(fileURLWithPath: file.path)
+    public func parse<File: FileType>(fileType: File) throws -> File.VisitorType.Syntax {
+
+        let syntax = try parseSyntax(path: fileType.path)
+        var visitor = fileType.visitor
+        syntax.walk(&visitor)
+        return visitor.parsedSyntax
     }
 
-    public func parse() throws -> ParsedSyntax {
-
-        let syntax = try parseSyntax()
-
-        switch file.kind {
-        case .viewModel:
-            var visitor = ViewModelVisitor()
-            syntax.walk(&visitor)
-            return visitor.parsedSyntax
-        case .viewController:
-            var visitor = ViewControllerVisitor()
-            syntax.walk(&visitor)
-            return visitor.parsedSyntax
-        default:
-            fatalError()
-        }
-    }
-
-    func parseSyntax() throws -> SourceFileSyntax {
+    func parseSyntax(path: String) throws -> SourceFileSyntax {
+        let pathURL = URL(fileURLWithPath: path)
         return try SyntaxParser.parse(pathURL)
     }
 }

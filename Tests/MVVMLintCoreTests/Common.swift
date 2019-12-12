@@ -19,9 +19,3 @@ func createSourceFile(from input: String, suffix: String = "") -> String {
     
     return url.path
 }
-
-func makeSyntax(from input: String) throws -> SourceFileSyntax {
-    let path = createSourceFile(from: input, suffix: "ViewModel")
-    let parser = Parser(file: File(path: path))
-    return try parser.parseSyntax()
-}

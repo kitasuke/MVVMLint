@@ -24,7 +24,7 @@ final class FileIteratorTests: XCTestCase {
             ]
             .map { [base, $0].joined() }
         let iterator = FileIterator(paths: paths)
-        let targetPaths = iterator.map { $0.path }
+        let targetPaths = iterator.map { $0 }
         XCTAssertEqual(
             targetPaths,
             ["ViewModel.swift", "ViewController.swift"].map { [base, $0].joined() }

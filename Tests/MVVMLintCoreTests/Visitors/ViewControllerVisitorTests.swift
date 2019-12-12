@@ -166,8 +166,8 @@ final class ViewControllerVisitorTests: XCTestCase {
     }
     
     private func makeSyntax(from input: String) throws -> SourceFileSyntax {
+        let parser = Parser()
         let path = createSourceFile(from: input, suffix: "ViewController")
-        let parser = Parser(file: File(path: path))
-        return try parser.parseSyntax()
+        return try parser.parseSyntax(path: path)
     }
 }

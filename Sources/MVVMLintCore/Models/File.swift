@@ -7,38 +7,19 @@
 
 import Foundation
 
-public struct File {
-    public var kind: FileKind
-    public var path: String
-    public var pathWithoutExtension: String
-    public var name: String
+public protocol FileType {
+    associatedtype VisitorType: MVVMVisitor
 
-    init(path: String) {
-        guard let url = URL(string: path) else {
-            fatalError("invalid path")
-        }
+    var path: String { get }
+    var url: URL { get }
+    var visitor: VisitorType { get }
+}
 
-        self.path = path
-        let urlDeletingPathExtension = url.deletingPathExtension()
-        self.pathWithoutExtension = urlDeletingPathExtension.absoluteString
-        self.name = urlDeletingPathExtension.lastPathComponent
-        self.kind = FileKind(name: self.name)
+extension FileType {
+    public var name: String {
+        return url.deletingPathExtension().lastPathComponent
     }
-}
-
-extension File {
-    public static let `extension` = "swift"
-}
-
-extension File {
-    func asViewControllerPath() -> String {
-        guard self.kind == .viewModel else {
-            return self.path
-        }
-
-        let endIndex = self.pathWithoutExtension.endIndex
-        let index = self.pathWithoutExtension.index(endIndex, offsetBy: -FileKind.viewModel.identifier.count)
-        let targetPath = self.pathWithoutExtension.replacingCharacters(in: index..<endIndex, with: FileKind.viewController.identifier)
-        return targetPath
+    public var pathWithoutExtension: String {
+        return url.deletingPathExtension().absoluteString
     }
 }

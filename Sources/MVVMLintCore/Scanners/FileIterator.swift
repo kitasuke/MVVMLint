@@ -20,11 +20,11 @@ public struct FileIterator: Sequence, IteratorProtocol {
         self.pathIterator = paths.makeIterator()
     }
 
-    public mutating func next() -> File? {
-        var file: File?
-        while file == nil {
+    public mutating func next() -> String? {
+        var path: String?
+        while path == nil {
             if directoryIterator != nil {
-                file = nextInDirectory()
+                path = nextInDirectory()
             } else {
                 guard let nextPath = pathIterator.next() else {
                     return nil
@@ -36,22 +36,22 @@ public struct FileIterator: Sequence, IteratorProtocol {
                     guard isValidPath(for: nextPath) else {
                         continue
                     }
-                    file = File(path: nextPath)
+                    path = nextPath
                 }
             }
         }
-        return file
+        return path
     }
 
-    private mutating func nextInDirectory() -> File? {
-        var file: File?
+    private mutating func nextInDirectory() -> String? {
+        var path: String?
         defer {
-            if file == nil {
+            if path == nil {
                 setDirectoryIterator(of: nil)
             }
         }
 
-        while file == nil {
+        while path == nil {
             guard let pathInDirectory = directoryIterator?.nextObject() as? String else {
                 break
             }
@@ -62,9 +62,9 @@ public struct FileIterator: Sequence, IteratorProtocol {
                 continue
             }
 
-            file = File(path: filePath)
+            path = filePath
         }
-        return file
+        return path
     }
 
     private func absolutePath(for path: String) -> String {
@@ -72,7 +72,7 @@ public struct FileIterator: Sequence, IteratorProtocol {
     }
 
     private func isValidPath(for path: String, pathInDirectory: String? = nil) -> Bool {
-        guard path.hasSuffix(".\(File.extension)"),
+        guard path.hasSuffix(".swift"),
             !path.contains("Tests") else {
             return false
         }

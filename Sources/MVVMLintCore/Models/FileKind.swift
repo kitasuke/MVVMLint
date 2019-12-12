@@ -18,6 +18,20 @@ public enum FileKind {
         }
     }
 
+    init(path: String) {
+        guard let url = URL(string: path) else {
+            fatalError()
+        }
+        let name = url.deletingPathExtension().lastPathComponent
+        if name.hasSuffix(FileKind.viewModel.identifier) {
+            self = .viewModel
+        } else if name.hasSuffix(FileKind.viewController.identifier) {
+            self = .viewController
+        } else {
+            self = .others
+        }
+    }
+
     init(name: String) {
         if name.hasSuffix(FileKind.viewModel.identifier) {
             self = .viewModel

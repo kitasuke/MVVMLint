@@ -151,4 +151,10 @@ final class ViewModelVisitorTests: XCTestCase {
             visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
+
+    private func makeSyntax(from input: String) throws -> SourceFileSyntax {
+        let parser = Parser()
+        let path = createSourceFile(from: input, suffix: "ViewModel")
+        return try parser.parseSyntax(path: path)
+    }
 }

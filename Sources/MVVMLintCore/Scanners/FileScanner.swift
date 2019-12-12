@@ -18,14 +18,15 @@ public struct FileScanner {
     public func scan() -> [FilePair] {
         let iterator = FileIterator(paths: paths)
 
-        var viewControllerFiles: [File] = []
-        var viewModelFiles: [File] = []
-        for file in iterator {
-            switch file.kind {
+        var viewControllerFiles: [ViewControllerFile] = []
+        var viewModelFiles: [ViewModelFile] = []
+        for path in iterator {
+            let kind = FileKind(path: path)
+            switch kind {
             case .viewModel:
-                viewModelFiles.append(file)
+                viewModelFiles.append(.init(path: path))
             case .viewController:
-                viewControllerFiles.append(file)
+                viewControllerFiles.append(.init(path: path))
             default:
                 break
             }
@@ -34,12 +35,11 @@ public struct FileScanner {
         let pairs: [FilePair] = viewModelFiles
             .compactMap { viewModel in
                 let targetPath = viewModel.asViewControllerPath()
-                let filePath = URL(string: targetPath)!.appendingPathExtension(File.extension).absoluteString
-                let file = File(path: filePath)
-                guard let viewController = viewControllerFiles.first(where: { $0.path == file.path }) else {
+                let filePath = URL(string: targetPath)!.appendingPathExtension("swift").absoluteString
+                guard let viewController = viewControllerFiles.first(where: { $0.path == filePath }) else {
                     return nil
                 }
-                return .init(files: [viewModel, viewController])
+                return .init(viewModel: viewModel, viewController: viewController)
         }
         return pairs
     }
