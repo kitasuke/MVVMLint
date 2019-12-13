@@ -14,12 +14,35 @@ extension IdentifierExprSyntax {
     }
 }
 
+extension MemberAccessExprSyntax {
+    func hasViewModel() -> Bool {
+        guard let base = base else {
+            return false
+        }
+
+        switch base {
+        case let identifierExpr as IdentifierExprSyntax:
+            // viewModel.apply()
+            return identifierExpr.isViewModel()
+        case let memberAccessExpr as MemberAccessExprSyntax:
+            // self?.viewModel.apply()
+            return memberAccessExpr.name.text == "viewModel"
+        default:
+            return false
+        }
+    }
+
+    func hasApply() -> Bool {
+        return name.text == "apply"
+    }
+}
+
 extension FunctionCallExprSyntax {
     func hasApplyMemberAccess() -> Bool {
+        // xxx.xxx.apply()
         guard let memberAccessExpr = calledExpression as? MemberAccessExprSyntax,
-            let identifierExpr = memberAccessExpr.base as? IdentifierExprSyntax,
-            identifierExpr.isViewModel(),
-            memberAccessExpr.name.text == "apply" else {
+            memberAccessExpr.hasApply(),
+            memberAccessExpr.hasViewModel() else {
             return false
         }
         return true

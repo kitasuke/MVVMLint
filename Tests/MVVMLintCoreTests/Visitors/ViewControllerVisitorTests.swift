@@ -19,7 +19,9 @@ final class ViewControllerVisitorTests: XCTestCase {
                 viewModel.apply(.viewDidLoad)
             }
             func buttonTapped() {
-                viewModel.apply(.buttonTapped(data))
+                closure { [weak self] in
+                    self?.viewModel.apply(.buttonTapped(data))
+                }
             }
         }
         """
@@ -65,7 +67,9 @@ final class ViewControllerVisitorTests: XCTestCase {
                 viewModel.apply(.viewDidLoad)
             }
             func buttonTapped() {
-                viewModel.apply(.buttonTapped(data))
+                closure { [weak self] in
+                    self?.viewModel.apply(.buttonTapped(data))
+                }
             }
 
             func bindViewModel() {
@@ -100,7 +104,9 @@ final class ViewControllerVisitorTests: XCTestCase {
                 viewModel.inputs.viewDidLoad()
             }
             func buttonTapped() {
-                viewModel.inputs.buttonTapped(data)
+                closure { [weak self] in
+                    self?.viewModel.inputs.buttonTapped(data)
+                }
             }
         }
         """
@@ -142,7 +148,9 @@ final class ViewControllerVisitorTests: XCTestCase {
                 viewModel.inputs.viewDidLoad()
             }
             func buttonTapped() {
-                viewModel.inputs.buttonTapped(data)
+                closure { [weak self] in
+                    self?.viewModel.inputs.buttonTapped(data)
+                }
             }
 
             func bindViewModel() {

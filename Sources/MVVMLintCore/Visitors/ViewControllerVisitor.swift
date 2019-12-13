@@ -34,8 +34,7 @@ public struct ViewControllerVisitor: MVVMVisitor {
     // visit visits member access expression for `viewModel.inputs.foo()` and `viewModel.outputs.bar = ...`
     public mutating func visit(_ node: MemberAccessExprSyntax) -> SyntaxVisitorContinueKind {
         guard let memberAccessExpr = node.base as? MemberAccessExprSyntax,
-            let identifierExpr = memberAccessExpr.base as? IdentifierExprSyntax,
-            identifierExpr.isViewModel() else {
+            memberAccessExpr.hasViewModel() else {
             return .skipChildren
         }
 
