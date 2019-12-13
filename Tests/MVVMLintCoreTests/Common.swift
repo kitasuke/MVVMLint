@@ -9,8 +9,8 @@ import Foundation
 import SwiftSyntax
 @testable import MVVMLintCore
 
-func createSourceFile(from input: String, suffix: String = "") -> String {
-    var filename = UUID().uuidString
+func createSourceFile(from input: String, suffix: String = "", filename: String = "") -> String {
+    var filename = filename.isEmpty ? UUID().uuidString : filename
     filename.append(suffix)
     let url = URL(fileURLWithPath: NSTemporaryDirectory())
         .appendingPathComponent(filename)
