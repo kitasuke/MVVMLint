@@ -25,7 +25,9 @@ public struct ViewControllerVisitor: MVVMVisitor {
                 .compactMap { $0.item as? SwitchStmtSyntax }
                 .flatMap { $0.cases.compactMap { $0 as? SwitchCaseSyntax } }
             parsedSyntax.outputSwitchCases.append(contentsOf: switchCases)
-            return .skipChildren
+
+            // to visit input function call in closure body, return .visitChildren
+            return .visitChildren
         }
         
         return .visitChildren
