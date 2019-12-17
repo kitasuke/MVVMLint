@@ -9,7 +9,8 @@ import Foundation
 import XCTest
 @testable import MVVMLintCore
 
-final class ParserTests: XCTestCase {
+final class ParserTests: FileManagableTestCase {
+
     func test_viewModelWithEnums() {
         let input = """
         class FooViewModel: ViewModelType {
@@ -138,12 +139,12 @@ final class ParserTests: XCTestCase {
     }
 
     private func makeViewModel(from input: String) -> ViewModelFile {
-        let path = createSourceFile(from: input, suffix: "ViewModel")
+        let path = createSourceFile(from: input, suffix: "ViewModel", foldername: foldername)
         return ViewModelFile(path: path)
     }
 
     private func makeViewController(from input: String) -> ViewControllerFile {
-        let path = createSourceFile(from: input, suffix: "ViewController")
+        let path = createSourceFile(from: input, suffix: "ViewController", foldername: foldername)
         return ViewControllerFile(path: path)
     }
 }

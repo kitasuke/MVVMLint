@@ -10,7 +10,8 @@ import XCTest
 import SwiftSyntax
 @testable import MVVMLintCore
 
-final class ViewModelVisitorTests: XCTestCase {
+final class ViewModelVisitorTests: FileManagableTestCase {
+
     func test_inputsEnumCases() {
         let input = """
         class FooViewModel: ViewModelType {
@@ -154,7 +155,7 @@ final class ViewModelVisitorTests: XCTestCase {
 
     private func makeSyntax(from input: String) throws -> SourceFileSyntax {
         let parser = Parser()
-        let path = createSourceFile(from: input, suffix: "ViewModel")
+        let path = createSourceFile(from: input, suffix: "ViewModel", foldername: foldername)
         return try parser.parseSyntax(path: path)
     }
 }

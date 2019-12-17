@@ -10,21 +10,22 @@ import XCTest
 import SwiftSyntax
 @testable import MVVMLintCore
 
-final class ViewControllerVisitorTests: XCTestCase {
+final class ViewControllerVisitorTests: FileManagableTestCase {
+
     func test_inputsFunctionCalls() {
         let input = """
-        class FooViewController {
-            var viewModel: FooViewModel
-            func viewDidLoad() {
-                viewModel.apply(.viewDidLoad)
-            }
-            func buttonTapped() {
-                closure { [weak self] in
-                    self?.viewModel.apply(.buttonTapped(data))
-                }
-            }
+class FooViewController {
+    var viewModel: FooViewModel
+    func viewDidLoad() {
+        viewModel.apply(.viewDidLoad)
+    }
+    func buttonTapped() {
+        closure { [weak self] in
+            self?.viewModel.apply(.buttonTapped(data))
         }
-        """
+    }
+}
+"""
         
         let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerVisitor()
@@ -37,18 +38,18 @@ final class ViewControllerVisitorTests: XCTestCase {
     
     func test_outputsCaseLabelIdentifiers() {
         let input = """
-        class FooViewController {
-            var viewModel: FooViewModel
-            func bindViewModel() {
-                viewModel.outputsObservable.subscribe { output in
-                    switch output {
-                    case reloadData: break
-                    case showError(let error): break
-                    }
-                }
+class FooViewController {
+    var viewModel: FooViewModel
+    func bindViewModel() {
+        viewModel.outputsObservable.subscribe { output in
+            switch output {
+            case reloadData: break
+            case showError(let error): break
             }
         }
-        """
+    }
+}
+"""
         
         let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerVisitor()
@@ -61,27 +62,27 @@ final class ViewControllerVisitorTests: XCTestCase {
     
     func test_inputsOutputsIdentifiers() {
         let input = """
-        class FooViewController {
-            var viewModel: FooViewModel
-            func viewDidLoad() {
-                viewModel.apply(.viewDidLoad)
-            }
-            func buttonTapped() {
-                closure { [weak self] in
-                    self?.viewModel.apply(.buttonTapped(data))
-                }
-            }
+class FooViewController {
+    var viewModel: FooViewModel
+    func viewDidLoad() {
+        viewModel.apply(.viewDidLoad)
+    }
+    func buttonTapped() {
+        closure { [weak self] in
+            self?.viewModel.apply(.buttonTapped(data))
+        }
+    }
 
-            func bindViewModel() {
-                viewModel.outputsObservable.subscribe { output in
-                    switch output {
-                    case reloadData: break
-                    case showError(let error): break
-                    }
-                }
+    func bindViewModel() {
+        viewModel.outputsObservable.subscribe { output in
+            switch output {
+            case reloadData: break
+            case showError(let error): break
             }
         }
-        """
+    }
+}
+"""
         
         let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerVisitor()
@@ -98,18 +99,18 @@ final class ViewControllerVisitorTests: XCTestCase {
     
     func test_inputsMemberAccessIdentifiers() {
         let input = """
-        class FooViewController: FooViewModelType {
-            var viewModel: FooViewModel
-            func viewDidLoad() {
-                viewModel.inputs.viewDidLoad()
-            }
-            func buttonTapped() {
-                closure { [weak self] in
-                    self?.viewModel.inputs.buttonTapped(data)
-                }
-            }
+class FooViewController: FooViewModelType {
+    var viewModel: FooViewModel
+    func viewDidLoad() {
+        viewModel.inputs.viewDidLoad()
+    }
+    func buttonTapped() {
+        closure { [weak self] in
+            self?.viewModel.inputs.buttonTapped(data)
         }
-        """
+    }
+}
+"""
         
         let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerVisitor()
@@ -122,14 +123,14 @@ final class ViewControllerVisitorTests: XCTestCase {
     
     func test_outputsMemberAccessIdentifiers() {
         let input = """
-        class FooViewController: FooViewModelType {
-            var viewModel: FooViewModel
-            func bindViewModel() {
-                viewModel.outputs.reloadData = { _ in }
-                viewModel.outputs.showError = { _ in Error() }
-            }
-        }
-        """
+class FooViewController: FooViewModelType {
+    var viewModel: FooViewModel
+    func bindViewModel() {
+        viewModel.outputs.reloadData = { _ in }
+        viewModel.outputs.showError = { _ in Error() }
+    }
+}
+"""
         
         let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerVisitor()
@@ -142,23 +143,23 @@ final class ViewControllerVisitorTests: XCTestCase {
     
     func test_inputsOutputsMemberAccessIdentifiers() {
         let input = """
-        class FooViewController: FooViewModelType {
-            var viewModel: FooViewModel
-            func viewDidLoad() {
-                viewModel.inputs.viewDidLoad()
-            }
-            func buttonTapped() {
-                closure { [weak self] in
-                    self?.viewModel.inputs.buttonTapped(data)
-                }
-            }
-
-            func bindViewModel() {
-                viewModel.outputs.reloadData = { _ in }
-                viewModel.outputs.showError = { _ in Error() }
-            }
+class FooViewController: FooViewModelType {
+    var viewModel: FooViewModel
+    func viewDidLoad() {
+        viewModel.inputs.viewDidLoad()
+    }
+    func buttonTapped() {
+        closure { [weak self] in
+            self?.viewModel.inputs.buttonTapped(data)
         }
-        """
+    }
+
+    func bindViewModel() {
+        viewModel.outputs.reloadData = { _ in }
+        viewModel.outputs.showError = { _ in Error() }
+    }
+}
+"""
 
         let syntax = try! makeSyntax(from: input)
         var visitor = ViewControllerVisitor()
@@ -175,7 +176,7 @@ final class ViewControllerVisitorTests: XCTestCase {
     
     private func makeSyntax(from input: String) throws -> SourceFileSyntax {
         let parser = Parser()
-        let path = createSourceFile(from: input, suffix: "ViewController")
+        let path = createSourceFile(from: input, suffix: "ViewController", foldername: foldername)
         return try parser.parseSyntax(path: path)
     }
 }

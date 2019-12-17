@@ -1,14 +1,11 @@
 //
-//  UnusedInputsRule.swift
+//  UnusedOutputsRule.swift
 //  MVVMLintCore
 //
 //  Created by Yusuke Kita on 2019/12/13.
 //
 
-import Foundation
-import SwiftSyntax
-
-public class UnusedInputsRule {
+public class UnusedOutputsRule {
 
     var viewModel: ParsedViewModel
     var viewController: ParsedViewController
@@ -19,14 +16,15 @@ public class UnusedInputsRule {
     }
 
     public func run() -> [String] {
-        let identifiers = viewController.inputIdentifiers
+        let identifiers = viewController.outputIdentifiers
         let identifierTexts = identifiers.map { $0.text }
 
         // TODO: consider same identifier but different label/type
         // e.g. setValue(Int) vs setValue(String) or set(number:) vs set(string:)
-        let result = viewModel.inputIdentifiers.filter { identifier in
+        let result = viewModel.outputIdentifiers.filter { identifier in
             return !identifierTexts.contains(identifier.text)
         }
         return result.map { $0.text }
     }
 }
+

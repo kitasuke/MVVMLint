@@ -1,24 +1,24 @@
 //
-//  UnusedInputsRuleTests.swift
+//  UnusedOutputsRuleTests.swift
 //  MVVMLintCoreTests
 //
-//  Created by Yusuke Kita on 2019/12/13.
+//  Created by Yusuke Kita on 2019/12/16.
 //
 
 import Foundation
 import XCTest
 @testable import MVVMLintCore
 
-final class UnusedInputsRuleTests: FileManagableTestCase {
+final class UnusedOutputsRuleTests: FileManagableTestCase {
 
-    func test_unusedEnumInputs() {
+    func test_unusedEnumOutputs() {
         let filename = UUID().uuidString
         _ = createSourceFile(from: """
 class FooViewModel: ViewModelType {
-    enum Inputs {
-        case viewDidLoad
-        case buttonTapped(Data)
-        case unusedInput
+    enum Outputs {
+        case reloadData
+        case showError(Error)
+        case unusedOutput
         case set(number: Int)
         case set(string: String)
     }
@@ -27,24 +27,22 @@ class FooViewModel: ViewModelType {
         _ = createSourceFile(from: """
 class FooViewController {
     var viewModel: FooViewModel
-    func viewDidLoad() {
-        viewModel.apply(.viewDidLoad)
-    }
-    func buttonTapped() {
-        closure { [weak self] in
-            self?.viewModel.apply(.buttonTapped(data))
+    func bindViewModel() {
+        viewModel.outputsObservable.subscribe { output in
+            switch output {
+            case reloadData: break
+            case showError(let error): break
+            case set(let number): break
+            }
         }
-    }
-    func setValue(_ value: Int) {
-        viewModel.apply(.set(number: value))
     }
 }
 """, suffix: "ViewController", foldername: foldername, filename: filename)
 
         let (parsedViewModel, parsedViewController) = makeParsed()
-        let result = UnusedInputsRule(viewModel: parsedViewModel, viewController: parsedViewController).run()
+        let result = UnusedOutputsRule(viewModel: parsedViewModel, viewController: parsedViewController).run()
         XCTAssertEqual(
-            ["unusedInput"], // set(string:) should be detected
+            ["unusedOutput"], // set(let number) should be detected
             result
         )
     }
@@ -52,39 +50,35 @@ class FooViewController {
     func test_unusedIdentifierInputs() {
         let filename = UUID().uuidString
         _ = createSourceFile(from: """
-protocol FooViewModelInputs {
-    func viewDidLoad()
-    func buttonTapped(data: Data)
-    func unusedInput()
-    func setValue(Int)
-    func setValue(String)
+protocol FooViewModelInputs {}
+protocol FooViewModelOutputs {
+    var reloadData: (() -> Void)? { get set }
+    var showError: (() -> Error)? { get set }
+    var unusedOutput: (() -> Void)? { get set }
+    var setValue: ((Int) -> Void)? { get set }
+    var setValue: ((String) -> Void)? { get set }
 }
 protocol FooViewModelType {
     var inputs: FooViewModelInputs { get }
+    var outputs: FooViewModelOutputs { get }
 }
 class FooViewModel: FooViewModelInputs, FooViewModelOutputs, FooViewModelType {}
 """, suffix: "ViewModel", foldername: foldername, filename: filename)
         _ = createSourceFile(from: """
 class FooViewController: FooViewModelType {
     var viewModel: FooViewModel
-    func viewDidLoad() {
-        viewModel.inputs.viewDidLoad()
-    }
-    func buttonTapped() {
-        closure { [weak self] in
-            self?.viewModel.inputs.buttonTapped(data)
-        }
-    }
-    func setValue(_ value: Int) {
-        viewModel.inputs.setValue(value)
+    func bindViewModel() {
+        viewModel.outputs.reloadData = { _ in }
+        viewModel.outputs.showError = { _ in Error() }
+        viewModel.outputs.setValue = { _ in }
     }
 }
 """, suffix: "ViewController", foldername: foldername, filename: filename)
 
         let (parsedViewModel, parsedViewController) = makeParsed()
-        let result = UnusedInputsRule(viewModel: parsedViewModel, viewController: parsedViewController).run()
+        let result = UnusedOutputsRule(viewModel: parsedViewModel, viewController: parsedViewController).run()
         XCTAssertEqual(
-            ["unusedInput"], // setValue(String) should be detected
+            ["unusedOutput"], // setValue(String) should be detected
             result
         )
     }
