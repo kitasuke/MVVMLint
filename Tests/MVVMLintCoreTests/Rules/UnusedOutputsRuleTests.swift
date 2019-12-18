@@ -30,9 +30,9 @@ class FooViewController {
     func bindViewModel() {
         viewModel.outputsObservable.subscribe { output in
             switch output {
-            case reloadData: break
-            case showError(let error): break
-            case set(let number): break
+            case .reloadData: break
+            case .showError(let error): break
+            case .set(let number): break
             }
         }
     }

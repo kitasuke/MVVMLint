@@ -45,11 +45,11 @@ public struct ParsedViewController: ParsedSyntax {
                 .flatMap { $0.caseItems
                     .compactMap { $0.pattern as? ExpressionPatternSyntax }
                     .compactMap { pattern in
-                        if let identifierExpr = pattern.expression as? IdentifierExprSyntax {
-                            return identifierExpr.identifier
+                        if let memberAccessExpr = pattern.expression as? MemberAccessExprSyntax {
+                            return memberAccessExpr.name
                         } else if let functionCallExpr = pattern.expression as? FunctionCallExprSyntax,
-                            let identifierExpr = functionCallExpr.calledExpression as? IdentifierExprSyntax {
-                            return identifierExpr.identifier
+                            let memberAccessExpr = functionCallExpr.calledExpression as? MemberAccessExprSyntax {
+                            return memberAccessExpr.name
                         }
                         return nil
                     }
