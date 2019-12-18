@@ -57,6 +57,8 @@ protocol FooViewModelOutputs {
     var unusedOutput: (() -> Void)? { get set }
     var setValue: ((Int) -> Void)? { get set }
     var setValue: ((String) -> Void)? { get set }
+
+    var title: String? { get }
 }
 protocol FooViewModelType {
     var inputs: FooViewModelInputs { get }
@@ -67,6 +69,9 @@ class FooViewModel: FooViewModelInputs, FooViewModelOutputs, FooViewModelType {}
         _ = createSourceFile(from: """
 class FooViewController: FooViewModelType {
     var viewModel: FooViewModel
+    func viewDidLoad() {
+        view.apply(viewModel.outputs.title)
+    }
     func bindViewModel() {
         viewModel.outputs.reloadData = { _ in }
         viewModel.outputs.showError = { _ in Error() }

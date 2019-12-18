@@ -48,6 +48,8 @@ final class ParserTests: FileManagableTestCase {
         protocol FooViewModelOutputs {
             var reloadData: (() -> Void)? { get set }
             var showError: (() -> Error)? { get set }
+
+            var title: String? { get }
         }
         protocol FooViewModelType {
             var inputs: FooViewModelInputs { get }
@@ -65,7 +67,7 @@ final class ParserTests: FileManagableTestCase {
             parsedSyntax.inputIdentifiers.map { $0.text }
         )
         XCTAssertEqual(
-            ["reloadData", "showError"],
+            ["reloadData", "showError", "title"],
             parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
@@ -112,6 +114,8 @@ final class ParserTests: FileManagableTestCase {
             var viewModel: FooViewModel
             func viewDidLoad() {
                 viewModel.inputs.viewDidLoad()
+
+                view.apply(viewModel.outputs.title)
             }
             func buttonTapped() {
                 viewModel.inputs.buttonTapped(data)
@@ -133,7 +137,7 @@ final class ParserTests: FileManagableTestCase {
             parsedSyntax.inputIdentifiers.map { $0.text }
         )
         XCTAssertEqual(
-            ["reloadData", "showError"],
+            ["title", "reloadData", "showError"],
             parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }

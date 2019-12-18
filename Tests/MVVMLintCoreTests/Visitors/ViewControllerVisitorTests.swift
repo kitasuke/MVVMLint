@@ -125,6 +125,9 @@ class FooViewController: FooViewModelType {
         let input = """
 class FooViewController: FooViewModelType {
     var viewModel: FooViewModel
+    func viewDidLoad() {
+        view.apply(viewModel.outputs.title)
+    }
     func bindViewModel() {
         viewModel.outputs.reloadData = { _ in }
         viewModel.outputs.showError = { _ in Error() }
@@ -136,7 +139,7 @@ class FooViewController: FooViewModelType {
         var visitor = ViewControllerVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
-            ["reloadData", "showError"],
+            ["title", "reloadData", "showError"],
             visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
@@ -146,6 +149,8 @@ class FooViewController: FooViewModelType {
 class FooViewController: FooViewModelType {
     var viewModel: FooViewModel
     func viewDidLoad() {
+        view.apply(viewModel.outputs.title)
+
         viewModel.inputs.viewDidLoad()
     }
     func buttonTapped() {
@@ -169,7 +174,7 @@ class FooViewController: FooViewModelType {
             visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
         XCTAssertEqual(
-            ["reloadData", "showError"],
+            ["title", "reloadData", "showError"],
             visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }

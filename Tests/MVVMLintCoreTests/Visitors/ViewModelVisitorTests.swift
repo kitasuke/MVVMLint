@@ -106,6 +106,8 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         protocol FooViewModelOutputs {
             var reloadData: (() -> Void)? { get set }
             var showError: (() -> Error)? { get set }
+
+            var title: String? { get }
         }
         protocol FooViewModelType {
             var inputs: FooViewModelInputs { get }
@@ -118,7 +120,7 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
-            ["reloadData", "showError"],
+            ["reloadData", "showError", "title"],
             visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
@@ -132,6 +134,8 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         protocol FooViewModelOutputs {
             var reloadData: (() -> Void)? { get set }
             var showError: (() -> Error)? { get set }
+
+            var title: String? { get }
         }
         protocol FooViewModelType {
             var inputs: FooViewModelInputs { get }
@@ -148,7 +152,7 @@ final class ViewModelVisitorTests: FileManagableTestCase {
             visitor.parsedSyntax.inputIdentifiers.map { $0.text }
         )
         XCTAssertEqual(
-            ["reloadData", "showError"],
+            ["reloadData", "showError", "title"],
             visitor.parsedSyntax.outputIdentifiers.map { $0.text }
         )
     }
