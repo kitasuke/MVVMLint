@@ -17,14 +17,13 @@ public class UnusedOutputsRule {
 
     public func run() -> [String] {
         let identifiers = viewController.outputIdentifiers
-        let identifierTexts = identifiers.map { $0.text }
 
         // TODO: consider same identifier but different label/type
         // e.g. setValue(Int) vs setValue(String) or set(number:) vs set(string:)
         let result = viewModel.outputIdentifiers.filter { identifier in
-            return !identifierTexts.contains(identifier.text)
+            return !identifiers.contains(identifier)
         }
-        return result.map { $0.text }
+        return result
     }
 }
 

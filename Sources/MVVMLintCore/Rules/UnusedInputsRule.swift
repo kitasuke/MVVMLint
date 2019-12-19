@@ -20,13 +20,12 @@ public class UnusedInputsRule {
 
     public func run() -> [String] {
         let identifiers = viewController.inputIdentifiers
-        let identifierTexts = identifiers.map { $0.text }
 
         // TODO: consider same identifier but different label/type
         // e.g. setValue(Int) vs setValue(String) or set(number:) vs set(string:)
         let result = viewModel.inputIdentifiers.filter { identifier in
-            return !identifierTexts.contains(identifier.text)
+            return !identifiers.contains(identifier)
         }
-        return result.map { $0.text }
+        return result
     }
 }

@@ -14,16 +14,23 @@ public struct ParsedViewModel: ParsedSyntax {
     public var inputFuncDecls: [FunctionDeclSyntax] = []
     public var outputDecls: [DeclSyntax] = []
 
-    public lazy var inputIdentifiers: [TokenSyntax] = {
+    public lazy var inputIdentifiers: [String] = {
         if inputEnumCaseElements.isEmpty {
             return inputFuncDecls
-                .map { $0.identifier }
+                .map { $0.identifier.text }
         } else {
             return inputEnumCaseElements
-                .map { $0.identifier }
+                .map {
+                    let identifier = $0.identifier.text
+                    if let labelIdentifiers = $0.associatedValue?.labelIdentifiers() {
+                        return identifier + labelIdentifiers
+                    } else {
+                        return identifier
+                    }
+            }
         }
     }()
-    public lazy var outputIdentifiers: [TokenSyntax] = {
+    public lazy var outputIdentifiers: [String] = {
         if outputEnumCaseElements.isEmpty {
             return outputDecls
                 .compactMap { decl in
@@ -32,16 +39,16 @@ public struct ParsedViewModel: ParsedSyntax {
                         return variable.bindings
                             .compactMap { $0.pattern as? IdentifierPatternSyntax }
                             .first
-                            .map { $0.identifier }
+                            .map { $0.identifier.text }
                     case let functionDecl as FunctionDeclSyntax:
-                        return functionDecl.identifier
+                        return functionDecl.identifier.text
                     default:
                         return nil
                     }
             }
         } else {
             return outputEnumCaseElements
-                .map { $0.identifier }
+                .map { $0.identifier.text }
         }
     }()
     

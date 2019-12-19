@@ -18,6 +18,8 @@ final class ViewModelVisitorTests: FileManagableTestCase {
             enum Inputs {
                 case viewDidLoad
                 case buttonTapped(Data)
+                case set(string: String)
+                case setValue(_ value: Value)
             }
         }
         """
@@ -26,8 +28,8 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
-            ["viewDidLoad", "buttonTapped"],
-            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
+            ["viewDidLoad", "buttonTapped", "set(string:)", "setValue"],
+            visitor.parsedSyntax.inputIdentifiers
         )
     }
     
@@ -46,7 +48,7 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.outputIdentifiers
         )
     }
     
@@ -56,6 +58,8 @@ final class ViewModelVisitorTests: FileManagableTestCase {
             enum Inputs {
                 case viewDidLoad
                 case buttonTapped(Data)
+                case set(string: String)
+                case setValue(_ value: Value)
             }
             enum Outputs {
                 case reloadData
@@ -68,12 +72,12 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         var visitor = ViewModelVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
-            ["viewDidLoad", "buttonTapped"],
-            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
+            ["viewDidLoad", "buttonTapped", "set(string:)", "setValue"],
+            visitor.parsedSyntax.inputIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.outputIdentifiers
         )
     }
     
@@ -96,7 +100,7 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.inputIdentifiers
         )
     }
     
@@ -121,7 +125,7 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError", "title"],
-            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.outputIdentifiers
         )
     }
     
@@ -149,11 +153,11 @@ final class ViewModelVisitorTests: FileManagableTestCase {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.inputIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError", "title"],
-            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.outputIdentifiers
         )
     }
 

@@ -24,6 +24,9 @@ class FooViewController {
             self?.viewModel.apply(.buttonTapped(data))
         }
     }
+    func setValue() {
+        viewModel.apply(.set(string: value))
+    }
 }
 """
         
@@ -31,8 +34,8 @@ class FooViewController {
         var visitor = ViewControllerVisitor()
         syntax.walk(&visitor)
         XCTAssertEqual(
-            ["viewDidLoad", "buttonTapped"],
-            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
+            ["viewDidLoad", "buttonTapped", "set(string:)"],
+            visitor.parsedSyntax.inputIdentifiers
         )
     }
     
@@ -56,7 +59,7 @@ class FooViewController {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.outputIdentifiers
         )
     }
     
@@ -89,11 +92,11 @@ class FooViewController {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.inputIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.outputIdentifiers
         )
     }
     
@@ -117,7 +120,7 @@ class FooViewController: FooViewModelType {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.inputIdentifiers
         )
     }
     
@@ -140,7 +143,7 @@ class FooViewController: FooViewModelType {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["title", "reloadData", "showError"],
-            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.outputIdentifiers
         )
     }
     
@@ -171,11 +174,11 @@ class FooViewController: FooViewModelType {
         syntax.walk(&visitor)
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            visitor.parsedSyntax.inputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.inputIdentifiers
         )
         XCTAssertEqual(
             ["title", "reloadData", "showError"],
-            visitor.parsedSyntax.outputIdentifiers.map { $0.text }
+            visitor.parsedSyntax.outputIdentifiers
         )
     }
     

@@ -21,6 +21,7 @@ class FooViewModel: ViewModelType {
         case unusedInput
         case set(number: Int)
         case set(string: String)
+        case setValue(_ value: Value)
     }
 }
 """, suffix: "ViewModel", foldername: foldername, filename: filename)
@@ -35,8 +36,9 @@ class FooViewController {
             self?.viewModel.apply(.buttonTapped(data))
         }
     }
-    func setValue(_ value: Int) {
-        viewModel.apply(.set(number: value))
+    func setValue() {
+        viewModel.apply(.set(number: number))
+        viewModel.apply(.setValue(value))
     }
 }
 """, suffix: "ViewController", foldername: foldername, filename: filename)
@@ -44,7 +46,7 @@ class FooViewController {
         let (parsedViewModel, parsedViewController) = makeParsed()
         let result = UnusedInputsRule(viewModel: parsedViewModel, viewController: parsedViewController).run()
         XCTAssertEqual(
-            ["unusedInput"], // set(string:) should be detected
+            ["unusedInput", "set(string:)"],
             result
         )
     }

@@ -31,11 +31,11 @@ final class ParserTests: FileManagableTestCase {
 
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            parsedSyntax.inputIdentifiers.map { $0.text }
+            parsedSyntax.inputIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            parsedSyntax.outputIdentifiers.map { $0.text }
+            parsedSyntax.outputIdentifiers
         )
     }
 
@@ -64,11 +64,11 @@ final class ParserTests: FileManagableTestCase {
 
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            parsedSyntax.inputIdentifiers.map { $0.text }
+            parsedSyntax.inputIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError", "title"],
-            parsedSyntax.outputIdentifiers.map { $0.text }
+            parsedSyntax.outputIdentifiers
         )
     }
 
@@ -100,11 +100,11 @@ final class ParserTests: FileManagableTestCase {
 
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            parsedSyntax.inputIdentifiers.map { $0.text }
+            parsedSyntax.inputIdentifiers
         )
         XCTAssertEqual(
             ["reloadData", "showError"],
-            parsedSyntax.outputIdentifiers.map { $0.text }
+            parsedSyntax.outputIdentifiers
         )
     }
 
@@ -134,11 +134,11 @@ final class ParserTests: FileManagableTestCase {
 
         XCTAssertEqual(
             ["viewDidLoad", "buttonTapped"],
-            parsedSyntax.inputIdentifiers.map { $0.text }
+            parsedSyntax.inputIdentifiers
         )
         XCTAssertEqual(
             ["title", "reloadData", "showError"],
-            parsedSyntax.outputIdentifiers.map { $0.text }
+            parsedSyntax.outputIdentifiers
         )
     }
 
