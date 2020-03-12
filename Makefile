@@ -11,6 +11,7 @@ build_release:
 install: build_release
 	@install -d "$(BIN_DIR)"
 	@install ".build/release/mvvmlint" "$(BIN_DIR)"
+	@zip .build/release/mvvmlint .build/release/MVVMLint
 
 clean:
 	@rm -rf .build
